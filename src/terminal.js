@@ -31,9 +31,9 @@ export class Terminal {
     if (!command) {
       throw new InputError(`command "${commandName}" is not supported.`);
     }
-    const errorMeaage = command.validate(...args);
-    if (errorMeaage) {
-      throw new InputError(errorMeaage);
+    const errorMessage = command.validate(...args);
+    if (errorMessage) {
+      throw new InputError(errorMessage);
     }
     try {
       await command.handler(...args);

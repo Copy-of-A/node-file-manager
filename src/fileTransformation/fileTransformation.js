@@ -3,7 +3,7 @@ import { pipeline } from "node:stream/promises";
 import * as fs from "node:fs";
 import * as crypto from "node:crypto";
 import * as zlib from "node:zlib";
-import { isPathExist } from "../utils";
+import { isPathExist } from "../utils.js";
 
 export class FileTransformation {
   #navigator;

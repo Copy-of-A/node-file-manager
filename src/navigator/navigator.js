@@ -1,8 +1,8 @@
 //@ts-check
 import { stat } from "node:fs/promises";
 import { join, isAbsolute } from "node:path";
-import { homedir } from "../os.js";
 import { isPathExist } from "../utils.js";
+import { homedir } from "node:os";
 
 const FS_ERROR_MESSAGE = "FS operation failed";
 
@@ -16,7 +16,7 @@ export class FsError extends Error {
 export class Navigator {
   #currentDir;
   constructor() {
-    this.currentDir = homedir;
+    this.#currentDir = homedir();
   }
 
   get path() {

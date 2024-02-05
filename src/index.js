@@ -7,16 +7,19 @@ import {
   FileTransformation,
   fileTransformationTerminalAdapter,
 } from "./fileTransformation/index.js";
+import { Os, osTerminalAdapter } from "./os/index.js";
 
 const username = getUserName();
 const navigator = new Navigator();
 const fs = new Fs(navigator);
 const fileTransformation = new FileTransformation(navigator);
 const terminal = new Terminal(username);
+const os = new Os();
 
 navigatorTerminalAdapter(navigator, terminal);
 fsTerminalAdapter(fs, terminal);
 fileTransformationTerminalAdapter(fileTransformation, terminal);
+osTerminalAdapter(os, terminal);
 
 const handleClose = () => {
   terminal.sayGoodbyeToUser();
