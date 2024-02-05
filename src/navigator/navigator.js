@@ -1,7 +1,8 @@
 //@ts-check
-import { lstatSync, existsSync } from "node:fs";
+import { stat } from "node:fs/promises";
 import { join, isAbsolute } from "node:path";
 import { homedir } from "../os.js";
+import { isPathExist } from "../utils.js";
 
 const FS_ERROR_MESSAGE = "FS operation failed";
 
@@ -23,18 +24,11 @@ export class Navigator {
   }
 
   up() {
-    // if (this.currentDir !== homedir) {
-    //   this.currentDir = join(this.currentDir, "..");
-    // }
     this.cd("..");
   }
 
-  #isDirectory(filepath) {
-    return lstatSync(filepath).isDirectory();
-  }
-
-  #isExists(filepath) {
-    return existsSync(filepath);
+  async #isDirectory(filepath) {
+    return (await stat(filepath)).isDirectory();
   }
 
   getAbsolutePath(pathToFile) {
@@ -43,11 +37,11 @@ export class Navigator {
       : join(this.#currentDir, pathToFile);
   }
 
-  cd(filepath) {
+  async cd(filepath) {
     const absolutePath = this.getAbsolutePath(filepath);
-    if (!this.#isExists(absolutePath))
+    if (!(await isPathExist(absolutePath)))
       throw new FsError(`no such file or directory: ${filepath}`);
-    if (!this.#isDirectory(absolutePath)) {
+    if (!(await this.#isDirectory(absolutePath))) {
       throw new FsError(`not a directory: ${filepath}`);
     }
     if (!absolutePath.startsWith(homedir)) return;

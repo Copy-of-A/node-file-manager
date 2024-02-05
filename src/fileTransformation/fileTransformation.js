@@ -3,7 +3,7 @@ import { pipeline } from "node:stream/promises";
 import * as fs from "node:fs";
 import * as crypto from "node:crypto";
 import * as zlib from "node:zlib";
-import * as fsPromises from "node:fs/promises";
+import { isPathExist } from "../utils";
 
 export class FileTransformation {
   #navigator;
@@ -28,23 +28,8 @@ export class FileTransformation {
     });
   }
 
-  async #isPathExist(filepath) {
-    let isExist = true;
-
-    try {
-      await fsPromises.access(
-        filepath,
-        fsPromises.constants.R_OK | fsPromises.constants.W_OK
-      );
-    } catch {
-      isExist = false;
-    }
-
-    return isExist;
-  }
-
   async compress(pathToFile, pathToDestination) {
-    if (!(await this.#isPathExist(pathToFile))) throw new Error();
+    if (!(await isPathExist(pathToFile))) throw new Error();
     const zip = zlib.createBrotliCompress();
     const source = fs.createReadStream(
       this.#navigator.getAbsolutePath(pathToFile)
@@ -57,7 +42,7 @@ export class FileTransformation {
   }
 
   async decompress(pathToFile, pathToDestination) {
-    if (!(await this.#isPathExist(pathToFile))) throw new Error();
+    if (!(await isPathExist(pathToFile))) throw new Error();
     const unzip = zlib.createBrotliDecompress();
     const source = fs.createReadStream(
       this.#navigator.getAbsolutePath(pathToFile)
