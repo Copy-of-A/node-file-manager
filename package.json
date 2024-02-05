@@ -8,7 +8,7 @@
   },
   "type": "module",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node  src/index.js"
   },
   "author": "Copy-of-A",
   "license": "ISC",

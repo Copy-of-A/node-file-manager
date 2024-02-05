@@ -15,8 +15,7 @@ export class FsError extends Error {
 export class Navigator {
   #currentDir;
   constructor() {
-    // this.currentDir = homedir;
-    this.#currentDir = "/Users/allamanshina/Projects/node-file-manager";
+    this.currentDir = homedir;
   }
 
   get path() {

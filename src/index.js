@@ -1,18 +1,22 @@
 //@ts-check
 import { getUserName } from "./user.js";
 import { Terminal } from "./terminal.js";
-import { Fs } from "./fs/fs.js";
-import { Navigator } from "./navigator/navigator.js";
-import { navigatorTerminalAdapter } from "./navigator/terminalAdapter.js";
-import { fsTerminalAdapter } from "./fs/terminalAdapter.js";
+import { Navigator, navigatorTerminalAdapter } from "./navigator/index.js";
+import { Fs, fsTerminalAdapter } from "./fs/index.js";
+import {
+  FileTransformation,
+  fileTransformationTerminalAdapter,
+} from "./fileTransformation/index.js";
 
 const username = getUserName();
 const navigator = new Navigator();
 const fs = new Fs(navigator);
+const fileTransformation = new FileTransformation(navigator);
 const terminal = new Terminal(username);
 
 navigatorTerminalAdapter(navigator, terminal);
 fsTerminalAdapter(fs, terminal);
+fileTransformationTerminalAdapter(fileTransformation, terminal);
 
 const handleClose = () => {
   terminal.sayGoodbyeToUser();
@@ -20,7 +24,7 @@ const handleClose = () => {
 };
 
 const printCurrentDir = () => {
-  console.log(`You are currently in: ${navigator.path}\n`);
+  console.log(`\nYou are currently in: ${navigator.path}\n`);
 };
 
 const handleInput = async (chunk) => {

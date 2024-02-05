@@ -38,7 +38,9 @@ export class Fs {
         encoding: "utf-8",
       }
     );
-    return pipeline(readableStream, process.stdout);
+    return pipeline(readableStream, process.stdout, {
+      end: false,
+    });
   }
 
   rn(pathToFile, newFileName) {
@@ -66,7 +68,9 @@ export class Fs {
       }
     );
 
-    return pipeline(readableStream, writableStream);
+    return pipeline(readableStream, writableStream, {
+      end: false,
+    });
   }
 
   rm(pathToFile) {
