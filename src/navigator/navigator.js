@@ -23,8 +23,8 @@ export class Navigator {
     return this.#currentDir;
   }
 
-  up() {
-    this.cd("..");
+  async up() {
+    await this.cd("..");
   }
 
   async #isDirectory(filepath) {
